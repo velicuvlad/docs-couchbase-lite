@@ -41,7 +41,7 @@ Then run the query using the`.execute()` method -- see {query-resultsets--xref} 
 :param-tags: query-syntax-n1ql
 include::partial$block_tabbed_code_example.adoc[]
 :param-tags!:
-<.> Here we are accessing th current database using the shorthand notation *`_`* -- see the <<lbl-from>> clause for more on data source selection and <<lbl-query-params>> for more on parameterized queries.
+<.> Here we are accessing the current database using the shorthand notation *`_`* -- see the <<lbl-from>> clause for more on data source selection and <<lbl-query-params>> for more on parameterized queries.
 
 
 == Query Format
@@ -54,7 +54,7 @@ The API uses query statements of the form shown in <<ex-query-form>>.
 [source, SQL, subs="+attributes, +macros"]
 ----
 SELECT {blank-field} // <.>
-FROM 'database' // <.>
+FROM 'datasource' // <.>
 WHERE {blank-field}, // <.>
 JOIN {blank-field} // <.>
 GROUP BY {blank-field} // <.>
@@ -112,7 +112,7 @@ columnAlias = IDENTIFIER
 --
 
 <.> selectResults is a list of columns projected in the query result.
-Each column is an expression which could be a property expression or any expressions or functions.
+Each column is an expression which could be a property expression or any expression or function.
 You can use the wildcard *** to select all columns -- see <<Select Wildcard>>
 
 <.> Use the optional `AS` argument to provides an alias name for a property. Each property can be aliased by putting the `AS <alias name>` after the column name.
@@ -140,10 +140,10 @@ This behavior is inline with that of Couchbase Server {sqlpp_cbm} -- see example
 | SELECT * FROM _default
 | _default
 
-|SELECT * FROM db
-|db
+|SELECT * FROM datasource
+|datasource
 
-|SELECT * FROM db AS store
+|SELECT * FROM datasource AS store
 |store
 
 |===
@@ -158,20 +158,20 @@ This behavior is inline with that of Couchbase Server {sqlpp_cbm} -- see example
 
 SELECT * <.>
 
-SELECT db.* AS data <.>
+SELECT datasource.* AS data <.>
 
 SELECT name fullName <.>
 
-SELECT db.name fullName <.>
+SELECT datasource.name fullName <.>
 
 SELECT DISTINCT address.city <.>
 
 ----
 
 <.> Use the `*` wildcard to select all properties
-<.> Select all properties from the `db` data source. Give the object an alias name of `data`
+<.> Select all properties from the `datasource` data source. Give the object an alias name of `data`
 <.> Select  pair of properties
-<.> Select a specific property from the `db` data source.
+<.> Select a specific property from the `datasource` data source.
 <.> Select the property item `city` from its parent property `address`.
 
 ====
@@ -209,9 +209,9 @@ To use the current database, without specifying a name, use `_` as the datasourc
 ====
 [source, sql]
 ----
-SELECT name FROM db
-SELECT store.name FROM db AS store
-SELECT store.name FROM db store
+SELECT name FROM datasource
+SELECT store.name FROM datasource AS store
+SELECT store.name FROM datasource store
 SELECT name FROM _
 SELECT store.name FROM _ AS store
 SELECT store.name FROM _ store
@@ -307,7 +307,7 @@ See also -- <<lbl-operators>> for more on building expressions and <<lbl-query-p
 [source, sql]
 ----
 
-SELECT name FROM db WHERE department = ‘engineer’ AND group = ‘mobile
+SELECT name FROM datasource WHERE department = ‘engineer’ AND group = ‘mobile
 
 ----
 
@@ -386,11 +386,11 @@ order = ( ASC / DESC ) <.>
 ====
 [source, sql]
 ----
-SELECT name FROM db  ORDER BY name
+SELECT name FROM datasource  ORDER BY name
 
-SELECT name FROM db  ORDER BY name DESC
+SELECT name FROM datasource  ORDER BY name DESC
 
-SELECT name, score FROM db  ORDER BY name ASC, score DESC
+SELECT name, score FROM datasource  ORDER BY name ASC, score DESC
 
 ----
 ====
@@ -422,7 +422,7 @@ limit = LIMIT expression <.>
 [source, sql]
 ----
 
-SELECT name FROM db LIMIT 10 <.>
+SELECT name FROM datasource LIMIT 10 <.>
 
 ----
 <.> Return only 10 results
@@ -453,9 +453,9 @@ offset = OFFSET expression <.>
 [source, sql]
 ----
 
-SELECT name FROM db OFFSET 10 <.>
+SELECT name FROM datasource OFFSET 10 <.>
 
-SELECT name FROM db  LIMIT 10 OFFSET 10 <.>
+SELECT name FROM datasource  LIMIT 10 OFFSET 10 <.>
 
 ----
 
@@ -506,8 +506,8 @@ Represents a true or false value.
 
 [source,sql]
 ----
-SELECT value FROM db  WHERE value = true
-SELECT value FROM db  WHERE value = false
+SELECT value FROM datasource  WHERE value = true
+SELECT value FROM datasource  WHERE value = false
 ----
 
 [#lbl-lit-numbers]
@@ -531,14 +531,14 @@ DIGIT = [0-9]
 
 [source,sql]
 ----
-SELECT value FROM db  WHERE value = 10
-SELECT value FROM db  WHERE value = 0
-SELECT value FROM db WHERE value = -10
-SELECT value FROM db WHERE value = 10.25
-SELECT value FROM db WHERE value = 10.25e2
-SELECT value FROM db WHERE value = 10.25E2
-SELECT value FROM db WHERE value = 10.25E+2
-SELECT value FROM db WHERE value = 10.25E-2
+SELECT value FROM datasource  WHERE value = 10
+SELECT value FROM datasource  WHERE value = 0
+SELECT value FROM datasource WHERE value = -10
+SELECT value FROM datasource WHERE value = 10.25
+SELECT value FROM datasource WHERE value = 10.25e2
+SELECT value FROM datasource WHERE value = 10.25E2
+SELECT value FROM datasource WHERE value = 10.25E+2
+SELECT value FROM datasource WHERE value = 10.25E-2
 ----
 
 [#lbl-lit-string]
@@ -560,8 +560,8 @@ The string literal represents a string or sequence of characters.
 ===== Example
 [source,sql]
 ----
-SELECT firstName, lastName FROM db WHERE middleName = “middle”
-SELECT firstName, lastName FROM db WHERE middleName = ‘middle’
+SELECT firstName, lastName FROM datasource WHERE middleName = “middle”
+SELECT firstName, lastName FROM datasource WHERE middleName = ‘middle’
 ----
 
 [#lbl-lit-null]
@@ -580,7 +580,7 @@ NULL
 ===== Example
 [source,sql]
 ----
-SELECT firstName, lastName FROM db WHERE middleName IS NULL
+SELECT firstName, lastName FROM datasource WHERE middleName IS NULL
 
 ----
 
@@ -600,7 +600,7 @@ MISSING
 ===== Example
 [source,sql]
 ----
-SELECT firstName, lastName FROM db WHERE middleName IS MISSING
+SELECT firstName, lastName FROM datasource WHERE middleName IS MISSING
 ----
 
 [#lbl-lit-array]
@@ -643,9 +643,9 @@ dictionaryLiteral = '{' _ ( STRING_LITERAL ':' e:expression
 ===== Example
 [source,sql]
 ----
-SELECT { ‘name’: ‘James’, ‘department’: 10 } FROM db
-SELECT { ‘name’: ‘James’, ‘department’: dept } FROM db
-SELECT { ‘name’: ‘James’, ‘phones’: [‘650-100-1000’, ‘650-100-2000’] } FROM db
+SELECT { ‘name’: ‘James’, ‘department’: 10 } FROM datasource
+SELECT { ‘name’: ‘James’, ‘department’: dept } FROM datasource
+SELECT { ‘name’: ‘James’, ‘phones’: [‘650-100-1000’, ‘650-100-2000’] } FROM datasource
 ----
 
 
@@ -729,19 +729,19 @@ propertyName = IDENTIFIER
 [source,sql]
 ----
 SELECT *
-  FROM db
+  FROM datasource
   WHERE contact.name = "daniel"
 
-SELECT db.*
-  FROM db
+SELECT datasource.*
+  FROM datasource
   WHERE contact.name = "daniel"
 
-SELECT db.contact.address.city
-  FROM db
+SELECT datasource.contact.address.city
+  FROM datasource
   WHERE contact.name = "daniel"
 
 SELECT contact.address.city, contact.phones[0]
-  FROM db
+  FROM datasource
   WHERE contact.name = "daniel"
 
 ----
@@ -793,7 +793,7 @@ NOTE: `ANY` and `SOME` are interchangeable
 [source,sql]
 ----
 SELECT name
-  FROM db
+  FROM datasource
   WHERE ANY v
           IN contacts
           SATISFIES v.city = ’San Mateo’
@@ -828,7 +828,7 @@ $IDENTIFIER
 ----
 
 SELECT name
-  FROM db
+  FROM datasource
   WHERE department = $department
 
 ----
@@ -1375,28 +1375,28 @@ collation = NO? (UNICODE | CASE | DIACRITICS) WB <.>
 
 [source, sql]
 ----
-SELECT department FROM db WHERE (name = "fred") COLLATE UNICODE
+SELECT department FROM datasource WHERE (name = "fred") COLLATE UNICODE
 
 ----
 
 
 [source, sql]
 ----
-SELECT department FROM db WHERE (name = "fred")
+SELECT department FROM datasource WHERE (name = "fred")
 COLLATE (UNICODE)
 ----
 
 
 [source, sql]
 ----
-SELECT department FROM db WHERE (name = "fred") COLLATE (UNICODE CASE)
+SELECT department FROM datasource WHERE (name = "fred") COLLATE (UNICODE CASE)
 
 ----
 
 
 [source, sql]
 ----
-SELECT name FROM db ORDER BY name COLLATE (UNICODE DIACRITIC)
+SELECT name FROM datasource ORDER BY name COLLATE (UNICODE DIACRITIC)
 
 ----
 
@@ -1449,7 +1449,7 @@ If no WHEN clause evaluate to TRUE, then the result of the expression is the ELS
 ====
 [source,sql]
 ----
-SELECT CASE state WHEN ‘CA’ THEN ‘Local’ ELSE ‘Non-Local’ END FROM DB
+SELECT CASE state WHEN ‘CA’ THEN ‘Local’ ELSE ‘Non-Local’ END FROM datasource
 ----
 
 ====
@@ -1460,7 +1460,7 @@ SELECT CASE state WHEN ‘CA’ THEN ‘Local’ ELSE ‘Non-Local’ END FROM D
 [source,sql]
 ----
 
-SELECT CASE WHEN shippedOn IS NOT NULL THEN ‘SHIPPED’ ELSE "NOT-SHIPPED" END FROM db
+SELECT CASE WHEN shippedOn IS NOT NULL THEN ‘SHIPPED’ ELSE "NOT-SHIPPED" END FROM datasource
 
 ----
 
@@ -1771,9 +1771,9 @@ a|Returns a dictionary containing metadata properties including:
 The optional dataSourceName identifies the database  or the database alias name. +
 To access a specific metadata property, use the dot expression.
 
-|SELECT META() FROM db
+|SELECT META() FROM datasource
 
-SELECT META().id, META().sequence, META().deleted, META().expiration FROM db
+SELECT META().id, META().sequence, META().deleted, META().expiration FROM datasource
 
 SELECT p.name, r.rating FROM product as p INNER JOIN reviews AS r ON META(r).id IN p.reviewList WHERE META(p).id = "product320"
 
